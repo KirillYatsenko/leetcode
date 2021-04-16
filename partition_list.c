@@ -32,22 +32,38 @@ struct ListNode *partition(struct ListNode *head, int x)
     struct ListNode *prev = NULL;
     struct ListNode *current = head;
     struct ListNode *pivot = NULL;
+    int pivot_set = 0;
 
     while (current)
     {
         // set pivot
-        if (pivot == NULL && current->val >= x)
+        if (!pivot_set && current->val >= x)
+        {
             pivot = prev;
+            pivot_set = 1;
+        }
 
         // insert current and change pivot
-        if (pivot && current->val < x)
+        if (pivot_set && current->val < x)
         {
-            struct ListNode *pivot_next = pivot->next;
-            struct ListNode *current_next = current->next;
+            struct ListNode *current_next = current->next; // save current next before overriding
 
-            pivot->next = current;
-            pivot = current;
-            pivot->next = pivot_next;
+            // if pivot is before head
+            if (!pivot)
+            {
+                struct ListNode *old_head = head; // save old head before overriding
+
+                pivot = current;
+                head = current;         // set new head
+                pivot->next = old_head; // set new head->next to old head
+            }
+            else
+            {
+                struct ListNode *pivot_next = pivot->next; // save old pivot->next before overriding
+                pivot->next = current;                     // save new pivot->next
+                pivot = current;
+                pivot->next = pivot_next; // setting NEW pivot->next to OLD pivot->next
+            }
 
             prev->next = current_next;
             current = current_next;
@@ -79,9 +95,22 @@ void main(void)
     printf("\n");
 
     // Test #2
-    size = 2;
-    int arr2[] = {2, 1};
+    size = 3;
+    int arr2[] = {1, 2, 1};
     head = list_convert(arr2, size);
+    newHead = partition(head, 2);
+
+    for (size_t i = 0; i < size; i++)
+    {
+        printf("%d,", newHead->val);
+        newHead = newHead->next;
+    }
+    printf("\n");
+
+    // Test #3
+    size = 2;
+    int arr3[] = {2, 1};
+    head = list_convert(arr3, size);
     newHead = partition(head, 2);
 
     for (size_t i = 0; i < size; i++)

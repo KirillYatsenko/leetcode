@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "treenode.h": "c"
+        "treenode.h": "c",
+        "algorithm": "c"
     }
 }
