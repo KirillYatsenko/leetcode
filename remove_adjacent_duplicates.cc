@@ -38,27 +38,26 @@ char *removeDuplicates(char *s, int k)
         }
         else
         {
-            if (count >= k)
-            {
-                strncpy((s + idx), (s + i), slen - i);
-                slen -= count;
+            push(st, idx, count);
+            count = 1;
+            idx = i;
+            continue;
+        }
 
-                if (st.empty())
-                    break;
+        if (count == k)
+        {
+            strncpy((s + idx), (s + i + 1), slen - i - 1);
+            slen -= count;
 
-                StackElem prev = st.top();
-                st.pop();
+            if (st.empty())
+                break;
 
-                i = idx - 1;
-                idx = prev.idx;
-                count = prev.count;
-            }
-            else
-            {
-                push(st, idx, count);
-                count = 1;
-                idx = i;
-            }
+            StackElem prev = st.top();
+            st.pop();
+
+            i = idx - 1;
+            idx = prev.idx;
+            count = prev.count;
         }
     }
 
@@ -68,17 +67,41 @@ char *removeDuplicates(char *s, int k)
 
 int main(void)
 {
+    char strA[] = "pioois";
+    removeDuplicates(strA, 2);
+    printf("strA = %s\n", strA);
+
+    char strB[] = "piooaais";
+    removeDuplicates(strB, 2);
+    printf("strB = %s\n", strB);
+
+    char strC[] = "a";
+    removeDuplicates(strC, 2);
+    printf("strC = %s\n", strC);
+
+    char strD[] = "aa";
+    removeDuplicates(strD, 2);
+    printf("strD = %s\n", strD);
+
+    char strE[] = "eee";
+    removeDuplicates(strE, 2);
+    printf("strE = %s\n", strE);
+
+    char str0[] = "aaab";
+    removeDuplicates(str0, 2);
+    printf("str0 = %s\n", str0);
+
     char str[] = "deeedbbcccbdaa";
     removeDuplicates(str, 3);
-    printf("%s\n", str);
+    printf("str = %s\n", str);
 
     char str1[] = "abcd";
     removeDuplicates(str1, 2);
-    printf("%s\n", str1);
+    printf("str1 = %s\n", str1);
 
     char str2[] = "pbbcggttciiippooaais";
     removeDuplicates(str2, 2);
-    printf("%s\n", str2);
+    printf("str2 = %s\n", str2);
 
     return 0;
 }

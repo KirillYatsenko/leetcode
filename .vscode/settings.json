@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "treenode.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "sstream": "cpp",
+        "string": "cpp"
     }
 }
